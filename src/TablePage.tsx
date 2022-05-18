@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {API_BASE_URL} from "./constants";
 import {Table} from "react-bootstrap";
-import {AddButton} from "./AddButton/AddButton";
 import moment from "moment/moment";
-import {useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 export function TablePage() {
+  const navigate = useNavigate();
   const [entities, setEntities] = useState([]);
   const { name } = useParams();
   useEffect(() => {
@@ -34,15 +34,17 @@ export function TablePage() {
         </tr>
         </thead>
         <tbody>
-        {entities.map((entity, i) =>
-          <tr key={i}>
+        {entities.map((entity : any, i) =>
+          <tr key={i} onClick={() => navigate( 'edit/' + entity.id)}>
             {Object.values(entity).map((value, i) =>
               <td key={i}>{format(value)}</td>)}
           </tr>
         )}
         </tbody>
       </Table>
-      <AddButton/>
+      <Link to='edit' state={entities[0]}>EDIT</Link>
+      <br/>
+      <Link to='/'>HOME</Link>
     </div>
   )
 }
